@@ -12,6 +12,11 @@ describe("ScaledSheet", () => {
     expect(ScaledSheet.create(input).color).toBe("black");
   });
 
+  test("Ignore styles works", () => {
+    const input = { flex: 2 };
+    expect(ScaledSheet.create(input).flex).toBe(2);
+  });
+
   test("No scale works", () => {
     const number = getRandomInt();
     const input = { test: `${number}@n` };
