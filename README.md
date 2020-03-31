@@ -67,6 +67,7 @@ ScaleSheet will take the same stylesObject a regular StyleSheet will take, plus 
 * `<size>@vs` - will apply `verticalScale` function on `size`.
 * `<size>@ms` - will apply `moderateScale` function with resize factor of 0.5 on `size`.
 * `<size>@ms<factor>` - will apply `moderateScale` function with resize factor of `factor` on size.
+* `<size>@n` - will keep the `size` intact, helpful when using with Config.awaysScale.
 
 ScaledSheet also supports rounding the result, simply add `r` at the end of the annotation. 
 
@@ -88,6 +89,8 @@ const styles = ScaledSheet.create({
 });
 ```
 
+Sometimes you don't want to add annotation to the end of every number of your ScaledSheet because you want them to be scale automactically. In that case, you can you the Config object that we provide. Read below for more details.
+
 ## Changing the Default Guideline Sizes
 
 In the ever-changing mobile devices world, screen sizes change a lot.  
@@ -103,7 +106,27 @@ Next and final step, you should change all your imports to `react-native-size-ma
 ```javascript
 import { ScaledSheet, moderateScale } from 'react-native-size-matters/extend';
 ```
+## Config object
 
+If you want to change the default guideline sizes without adding react-native-dotenv lib to your app (you may prefer react-native-config), you can use the Config object to define the custom guideline sizes.
+
+```
+// sizeMattersConfig.js
+import { Config } from 'react-native-size-matters'
+
+Config.set({ guidelineBaseWidth: 375, guidelineBaseHeight: 812 }) // iphoneX
+```
+then import this file in your index.js or App.js file.
+
+The Config object also accepts an `alwaysScale` attribute. If it's present, it will be applied to all the numeric values in ScaledSheet without any annotation required. To apply `scale` to ScaledSheet automatically, you can do something like this:
+
+```
+import { Config, scale } from 'react-native-size-matters'
+
+Config.set({ alwaysScale: scale })
+```
+
+In case you want to disable scale on some values after you turn on `alwaysScale`, you can add postfix `@n` to that value. For example, the value in `{ margin: '10@n'}` will not be scaled.
 ## Examples
 You can clone the [expo-example-app](./examples/expo-example-app) from this repo, run `npm install` and `npm start` and scan the presented QR code in the [Expo app](https://expo.io) on your preferred device.  
 The app has an on/off switch for using `react-native-size-matters`, so you can test yourself how the app will look with and without scaling.   
